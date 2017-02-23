@@ -1,5 +1,6 @@
 //required modules
 var express = require( "express" );
+var session = require('express-session');
 var http    = require( "http" );
 
 //dependency injection
@@ -7,6 +8,9 @@ var config   = require( "./config.js" );
 var myRoutes = require( "./routes/myRoutes.js" );
 
 var app      = express();
+
+// Set session secret key
+app.use(session({secret: 'magbog'}));
 // Middleware to load static files
 app.use( express.static( __dirname  + '/public' ) );
 console.log(__dirname);

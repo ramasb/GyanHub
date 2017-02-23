@@ -65,9 +65,10 @@ myRoutes.signup = function(req,res)
 myRoutes.login = function(req, res) {
   var userInfo = {};
   var response = {};
-	var message = "NOUSER";
+  var message = "NOUSER";
+	
   try {
-
+	var sess=req.session;
     rUsername = req.params.username;
     rPassword = req.params.password;
 
@@ -79,6 +80,7 @@ myRoutes.login = function(req, res) {
 				     var jEmail = userData.users[i].Email;
 				     var jPassword = userData.users[i].Password;
 				     if(rUsername === jEmail && rPassword === jPassword) {
+				    	 	sess.user = userData.users[i];
 				     		message = "SUCCESS";
 				     		break;
 				     }
@@ -99,9 +101,13 @@ myRoutes.login = function(req, res) {
 
 //to check login based on parameters
 myRoutes.home = function(req, res) {
-	var homePage = "/main.html";
+  var page = "/";
+  var sess=req.session;
   try {
-      res.redirect(homePage);
+	  if(sess.user && sess.user.Email) {
+		  page = "/main.html";
+	  } 
+	  res.redirect(page);
   }
   catch(err) {
 	    console.log('Server error:', err);
